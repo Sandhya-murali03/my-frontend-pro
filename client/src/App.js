@@ -11,33 +11,42 @@ import FocusMode from './pages/FocusMode';
 import Tasks from './pages/Tasks';
 import Analytics from './pages/Analytics';
 
-// ✅ Safe Protected Route (GitHub-friendly)
+// ✅ ProtectedRoute (GitHub Pages friendly)
 const ProtectedRoute = ({ children }) => {
   const { loading } = useAuth();
 
   if (loading) {
-    return <div className="p-10 text-center">Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-dark-bg">
+        <div className="text-2xl text-gray-600 dark:text-gray-400">Loading...</div>
+      </div>
+    );
   }
 
-  // 🔥 TEMP: allow access (since backend not deployed)
+  // 🔥 TEMP: allow access without backend
   return children;
 
-  // 👉 Later (when backend ready):
+  // 👉 When backend is ready, replace with:
   // const { isAuthenticated } = useAuth();
   // return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
-// ✅ Safe Public Route
+// ✅ PublicRoute (GitHub Pages friendly)
 const PublicRoute = ({ children }) => {
   const { loading } = useAuth();
 
   if (loading) {
-    return <div className="p-10 text-center">Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-dark-bg">
+        <div className="text-2xl text-gray-600 dark:text-gray-400">Loading...</div>
+      </div>
+    );
   }
 
+  // 🔥 TEMP: allow access without backend
   return children;
 
-  // 👉 Later:
+  // 👉 When backend is ready, replace with:
   // const { isAuthenticated } = useAuth();
   // return !isAuthenticated ? children : <Navigate to="/dashboard" />;
 };
@@ -45,17 +54,17 @@ const PublicRoute = ({ children }) => {
 function AppRoutes() {
   return (
     <Routes>
-      {/* Public */}
+      {/* Public Routes */}
       <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
       <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
 
-      {/* Protected (temporarily open) */}
+      {/* Protected Routes (temporarily open) */}
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/focus" element={<ProtectedRoute><FocusMode /></ProtectedRoute>} />
       <Route path="/tasks" element={<ProtectedRoute><Tasks /></ProtectedRoute>} />
       <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
 
-      {/* Default */}
+      {/* Default Route */}
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
