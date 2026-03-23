@@ -1,6 +1,6 @@
 import React from 'react';
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 
 // Pages
@@ -13,42 +13,20 @@ import Analytics from './pages/Analytics';
 
 // ✅ ProtectedRoute (GitHub Pages friendly)
 const ProtectedRoute = ({ children }) => {
-  const { loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-dark-bg">
-        <div className="text-2xl text-gray-600 dark:text-gray-400">Loading...</div>
-      </div>
-    );
-  }
-
-  // 🔥 TEMP: allow access without backend
-  return children;
-
-  // 👉 When backend is ready, replace with:
-  // const { isAuthenticated } = useAuth();
-  // return isAuthenticated ? children : <Navigate to="/login" />;
+  return (
+    <div className="min-h-screen">
+      {children}
+    </div>
+  );
 };
 
 // ✅ PublicRoute (GitHub Pages friendly)
 const PublicRoute = ({ children }) => {
-  const { loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-dark-bg">
-        <div className="text-2xl text-gray-600 dark:text-gray-400">Loading...</div>
-      </div>
-    );
-  }
-
-  // 🔥 TEMP: allow access without backend
-  return children;
-
-  // 👉 When backend is ready, replace with:
-  // const { isAuthenticated } = useAuth();
-  // return !isAuthenticated ? children : <Navigate to="/dashboard" />;
+  return (
+    <div className="min-h-screen">
+      {children}
+    </div>
+  );
 };
 
 function AppRoutes() {
