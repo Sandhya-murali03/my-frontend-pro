@@ -1,6 +1,6 @@
 import React from 'react';
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { HashRouter as Router } from "react-router-dom";
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 
 // Pages
@@ -11,40 +11,94 @@ import FocusMode from './pages/FocusMode';
 import Tasks from './pages/Tasks';
 import Analytics from './pages/Analytics';
 
-// ✅ ProtectedRoute (GitHub Pages friendly)
+// Protected Route Component
 const ProtectedRoute = ({ children }) => {
-  return (
-    <div className="min-h-screen">
-      {children}
-    </div>
-  );
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-dark-bg">
+        <div className="text-2xl text-gray-600 dark:text-gray-400">Loading...</div>
+      </div>
+    );
+  }
+
+  return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
-// ✅ PublicRoute (GitHub Pages friendly)
+// Public Route Component (redirect to dashboard if already logged in)
 const PublicRoute = ({ children }) => {
-  return (
-    <div className="min-h-screen">
-      {children}
-    </div>
-  );
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-dark-bg">
+        <div className="text-2xl text-gray-600 dark:text-gray-400">Loading...</div>
+      </div>
+    );
+  }
+
+  return !isAuthenticated ? children : <Navigate to="/dashboard" />;
 };
 
 function AppRoutes() {
   return (
     <Routes>
       {/* Public Routes */}
-      <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-      <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
+        }
+      />
 
-      {/* Protected Routes (temporarily open) */}
-      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-      <Route path="/focus" element={<ProtectedRoute><FocusMode /></ProtectedRoute>} />
-      <Route path="/tasks" element={<ProtectedRoute><Tasks /></ProtectedRoute>} />
-      <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
+      {/* Protected Routes */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/focus"
+        element={
+          <ProtectedRoute>
+            <FocusMode />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/tasks"
+        element={
+          <ProtectedRoute>
+            <Tasks />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/analytics"
+        element={
+          <ProtectedRoute>
+            <Analytics />
+          </ProtectedRoute>
+        }
+      />
 
       {/* Default Route */}
-      <Route path="/" element={<Navigate to="/login" />} />
-      <Route path="*" element={<Navigate to="/login" />} />
+      <Route path="/" element={<Navigate to="/dashboard" />} />
+      <Route path="*" element={<Navigate to="/dashboard" />} />
     </Routes>
   );
 }
