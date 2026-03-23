@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Sandhya-murali03/my-frontend-pro.git/static/css/main.30b3e4b2.css",
+    "main.js": "/Sandhya-murali03/my-frontend-pro.git/static/js/main.af195530.js",
+    "index.html": "/Sandhya-murali03/my-frontend-pro.git/index.html",
+    "main.30b3e4b2.css.map": "/Sandhya-murali03/my-frontend-pro.git/static/css/main.30b3e4b2.css.map",
+    "main.af195530.js.map": "/Sandhya-murali03/my-frontend-pro.git/static/js/main.af195530.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.30b3e4b2.css",
+    "static/js/main.af195530.js"
+  ]
+}
